@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+		html, body { margin: 0; }
+		#carousel {
+			width: auto;
+			height: auto;
+			margin: 10px auto 0;
+			padding: 12px;
+			position: relative;
+		}
+		</style>
+		<title>C&amp;A</title>
+		<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery/utils/ImageQueue.js"></script>
+		<script type="text/javascript" src="js/jquery/utils/Carousel.js"></script>
+		<script type="text/javascript" src="js/jquery/plugins/jquery.carouselHtml5.js"></script>
+	</head>
+	<body>
+		<div id="carousel">
+			<img src="images/imgFashionItem01.jpg" alt="" />
+			<img src="images/imgFashionItem02.jpg" />
+			<img src="images/imgFashionItem03.jpg" />
+			<img src="images/imgFashionItem04.jpg" />
+			<img src="images/imgFashionItem05.jpg" />
+			<img src="images/imgFashionItem06.jpg" />
+			<img src="images/imgFashionItem07.jpg" />
+			<img src="images/imgFashionItem08.jpg" />
+		</div>
+		<script type="text/javascript">
+		$(function() {
+			$('#carousel').carouselHtml5({
+				displayItems: 20,
+				walk: 		  10,
+				itemStyle: {
+					margin:             '0 3px',
+					backgroundColor:    '#000',
+					padding:            0,
+					border:             0,
+					cursor:             'pointer'
+				},
+				onItemClick: function() {}
+			});
+		});
+		</script>
+	</body>
+</html>
