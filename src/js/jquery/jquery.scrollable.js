@@ -7,9 +7,14 @@
         _walk:              1,
         _displayItems:      4,
         _animateDelay:      300,
-        _itemW:             null,
-        _itemH:             null,
-        _itemStyle:         null,
+        _itemW:             143,
+        _itemH:             142,
+        _itemStyle:         {
+            margin:          '0 3px',
+            backgroundColor: '#000',
+            padding:         0,
+            border:          0
+        },
         _target:            null,
         _content:           null,
         _scroll:            null,
@@ -17,9 +22,9 @@
         _btnNext:           null,
         _data:              null,
         _dataCollection:    null,
-        _onItemClick:       null,
+        _onItemClick:       function() {},
         _autoScroll:        false,
-        _autoScrollDelay:   2000,
+        _autoScrollDelay:   3000,
         _orientation:       'landscape',
         
         setTarget: function(target) {
@@ -27,19 +32,11 @@
         },
         
         setOptions: function(options) {
-            this._itemW             = options.itemW;
-            this._itemH             = options.itemH;
-            this._itemStyle         = options.itemStyle;
-            this._displayItems      = options.displayItems;
-            this._walk              = options.walk;
-            this._onItemClick       = options.onItemClick || function() {};
-            this._autoScroll        = options.autoScroll;
-            this._autoScrollDelay   = options.autoScrollDelay;
-            this._orientation       = options.orientation;
-            this._btnPrev           = options.btnPrev;
-            this._btnNext           = options.btnNext;
-            this._btnPrevAttributes = options.btnPrevAttributes;
-            this._btnNextAttributes = options.btnNextAttributes;
+            for(key in options) {
+                if(typeof this['_'+key] !== 'undefined') {
+                    this['_'+key] = options[key];
+                }
+            }
         },
         
         init: function() {
@@ -47,11 +44,7 @@
             this._target.hide();
             this._setData(function() {
                 self._createContent();
-                if(self._btnPrev == null || self._btnNext == null) {
-                    self._btnPrev = $('<button id="btnPrev">&lt;</button>').appendTo(self._content);
-                    self._btnNext = $('<button id="btnNext">&gt;</button>').appendTo(self._content);
-                }
-                self._setNavs();
+                self._createNavs();
                 self._target.show();
                 self.current();
             });
@@ -60,6 +53,7 @@
         current: function() {
             var self = this;
             this._adjustScroll();
+            
             this._btnPrev.bind('click', function(e) {
                 self._btnPrev.unbind('click');
                 self._btnNext.unbind('click');
@@ -122,34 +116,11 @@
             });
         },
         
-        _setNavs: function() {
-            var prevAttr = this._btnPrevAttributes || {};
-            var nextAttr = this._btnNextAttributes || {};
-            var style = {
-                width:      50,
-                height:     50,
-                margin:     '40px 0 0',
-                padding:    0,
-                border:     0,
-                position:   'relative',
-                top:        0,
-                left:       0,
-                cursor:     'pointer',
-                zIndex:     2
-            };
-            
-            if(prevAttr['style'] == undefined || prevAttr['style'] == null) prevAttr['style'] = {};
-            if(nextAttr['style'] == undefined || nextAttr['style'] == null) nextAttr['style'] = {};
-            
-            style.float = 'left';
-            prevAttr['style'] = $.extend(style, prevAttr['style']);
-            this._btnPrev.attr(prevAttr);
-            this._btnPrev.css(prevAttr['style']);
-            
-            style.float = 'right';
-            nextAttr['style'] = $.extend(style, nextAttr['style']);
-            this._btnNext.attr(nextAttr);
-            this._btnNext.css(nextAttr['style']);
+        _createNavs: function() {
+            if(this._btnPrev == null || this._btnNext == null) {
+                this._btnPrev = $('<button id="btnPrev">&lt;</button>').appendTo(this._content);
+                this._btnNext = $('<button id="btnNext">&gt;</button>').appendTo(this._content);
+            }
         },
         
         _setData: function(fnCallback) {
@@ -265,5 +236,64 @@
             img.css('left', (width - newWidth) / 2);
             img.css('top', (height - newHeight) / 2);
         }
+    };
+})(jQuery, window);
+
+(function($, w, undefined) {
+    var ImageQueue = w.ImageQueue = function() {};
+    
+    ImageQueue.prototype = {
+        _actual: 0,
+        _data: null,
+        
+        _oncomplete: function() {},
+        
+        addItem: function(image) {
+            if(this._data == null) this._data = [];
+            this._data.push(image);
+        },
+        
+        start: function() {
+            if(typeof(this._data[this._actual]) !== 'undefined') {
+                this._actual = 0;
+                this._current();
+                return true;
+            }
+            return false;
+        },
+        
+        _current: function() {
+            var self = this;
+            var image = this._data[this._actual];
+            if(image.complete) {
+                self._next();
+            } else {
+                $(image).one('load', function() {
+                    self._next();
+                });
+            }
+        },
+        
+        _next: function() {
+            this._actual++;
+            if(typeof(this._data[this._actual]) !== 'undefined') {
+                this._current();
+            } else {
+                this._oncomplete();
+            }
+        }
+    };
+})(jQuery, window);
+
+(function($, w, undefined) {
+    $.fn.scrollable = function(options) {
+        
+        return this.each(function(i, el) {
+            var target = $(this);
+            var c = new Carousel();
+            c.setTarget(target);
+            c.setOptions(options);
+            c.init();
+        });
     };
 })(jQuery, window);

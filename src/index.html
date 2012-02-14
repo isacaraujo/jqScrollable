@@ -4,18 +4,17 @@
 		<style type="text/css">
 		html, body { margin: 0; }
 		#carousel {
-			width: auto;
-			height: auto;
-			margin: 10px auto 0;
-			padding: 12px;
+			width: 	  auto;
+			height:   auto;
+			margin:   10px auto 0;
+			padding:  12px;
 			position: relative;
 		}
 		</style>
-		<title>C&amp;A</title>
+		<title>jQuery Plugin - Carousel HTML 5</title>
 		<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
-		<script type="text/javascript" src="js/jquery/utils/ImageQueue.js"></script>
-		<script type="text/javascript" src="js/jquery/utils/Carousel.js"></script>
-		<script type="text/javascript" src="js/jquery/plugins/jquery.carouselHtml5.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.scrollable.js"></script>
+		<link rel="stylesheet" type="text/css" href="js/jquery/jquery.scrollable.css" media="all" />
 	</head>
 	<body>
 		<div id="carousel">
@@ -29,10 +28,11 @@
 			<img src="images/imgFashionItem08.jpg" />
 		</div>
 		<script type="text/javascript">
+		/*<![CDATA[*/
 		$(function() {
-			$('#carousel').carouselHtml5({
-				displayItems: 20,
-				walk: 		  10,
+			$('#carousel').scrollable({
+				displayItems: 3,
+				walk: 		  1,
 				itemStyle: {
 					margin:             '0 3px',
 					backgroundColor:    '#000',
@@ -43,6 +43,7 @@
 				onItemClick: function() {}
 			});
 		});
+		/*]]>*/
 		</script>
 	</body>
 </html>
