@@ -1,0 +1,11 @@
+changelog v0.1
+ - Desenvolvimento da base do código
+ - Separação das classes
+ - Desenvolvimento do ImageCache plugin
+ - Inserção de imagens para testes
+ 
+changelog v0.2
+ - Alteração do nome do plugin para Scrollable
+ - Optimização do codigo fonte com redução de linhas de código
+ - Separação de código e estilo
+ - Início da customização do estilo do plugin
